@@ -1,0 +1,19 @@
+{
+  "id": "qucanhtrnnguyn/hodc2026-train",
+  "title": "HODC2026 train",
+  "code_file": "train.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [
+    "qucanhtrnnguyn/hodc2026-offline-deps"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [
+    "qucanhtrnnguyn/hodc2026-prep-train",
+    "qucanhtrnnguyn/hodc2026-dupcheck"
+  ]
+}

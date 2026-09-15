@@ -1,0 +1,36 @@
+# Dataset
+data/
+*.zip
+
+# Kaggle credentials - KHONG BAO GIO commit
+kaggle.json
+.kaggle/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model weights
+*.pt
+*.pth
+*.onnx
+*.engine
+
+# Training outputs (giu lai config + metrics trong experiments/)
+runs/
+experiments/**/weights/
+experiments/**/*.pt
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,9 @@
+# Local: EDA + chuan bi du lieu + ghep CSV (may khong co GPU)
+numpy>=1.26
+pillow>=10.0
+pandas>=2.0
+matplotlib>=3.8
+tqdm>=4.66
+kaggle>=1.6
+jupyter>=1.0
+opencv-python-headless>=4.9

@@ -1,0 +1,13 @@
+{
+  "id": "qucanhtrnnguyn/hodc2026-dupcheck",
+  "title": "HODC2026 dupcheck",
+  "code_file": "dup.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": ["qucanhtrnnguyn/hodc2026-prep-train"]
+}

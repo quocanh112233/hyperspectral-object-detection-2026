@@ -20,7 +20,7 @@ from ultralytics import YOLO
 # mien la chung duoc xep hang dung. Mac dinh conf=0.25 se mat diem.
 CONF = float(os.environ.get("HODC_CONF", 0.0001))
 MAX_DET = int(os.environ.get("HODC_MAXDET", 300))
-IMGSZ = int(os.environ.get("HODC_IMGSZ", 768))
+IMGSZ = None   # doc tu checkpoint o duoi, tranh lech do phan giai train/inference
 BATCH = int(os.environ.get("HODC_BATCH", 16))
 
 LOCAL = os.environ.get("HODC_LOCAL")
@@ -35,7 +35,7 @@ else:
     WEIGHTS = w[0]
     SETS = []
     for tag in ["test", "ranking"]:
-        hits = glob.glob(f"/kaggle/input/**/hodc_{tag}/images", recursive=True)
+        hits = glob.glob(f"/kaggle/input/**/hodc_{tag}*/images", recursive=True)
         if hits:
             SETS.append((tag, hits[0]))
     assert SETS, "khong thay thu muc anh nao"
@@ -48,6 +48,21 @@ print("cac bo  :", [(t, len(glob.glob(f'{d}/*.tif'))) for t, d in SETS])
 model = YOLO(WEIGHTS)
 names = model.names
 CH = model.model.yaml.get("channels", 3)
+
+# Doc imgsz DA DUNG LUC TRAIN tu checkpoint. Chay inference o do phan giai khac
+# luc train lam mAP tut ma khong bao loi gi.
+import torch as _t
+_ck = _t.load(WEIGHTS, weights_only=False, map_location="cpu")
+_ta = _ck.get("train_args") or {}
+_train_imgsz = _ta.get("imgsz")
+if os.environ.get("HODC_IMGSZ"):
+    IMGSZ = int(os.environ["HODC_IMGSZ"])
+    print(f"imgsz = {IMGSZ} (dat thu cong; luc train dung {_train_imgsz})")
+else:
+    assert _train_imgsz, "checkpoint khong ghi imgsz -> phai dat HODC_IMGSZ thu cong"
+    IMGSZ = int(_train_imgsz)
+    print(f"imgsz = {IMGSZ} (lay tu checkpoint, khop voi luc train)")
+del _ck
 print("so lop cua model:", len(names), "| so kenh:", CH)
 assert CH == 16, f"model nay chi co {CH} kenh - sai checkpoint"
 
@@ -97,6 +112,36 @@ for tag, d in SETS:
         if (i // BATCH) % 10 == 0:
             print(f"  [{tag}] {min(i+BATCH, len(files))}/{len(files)}", flush=True)
 
+# Anh khong co du doan nao se mat TRANG diem cua anh do. Quet lai rieng chung
+# voi nguong gan bang 0 truoc khi ket luan la model that su khong thay gi.
+have = {r[0] for r in rows}
+missing0 = [i for i in all_ids if i not in have]
+if missing0:
+    print(f"quet lai {len(missing0)} anh chua co du doan voi conf=1e-7...", flush=True)
+    id2path = {os.path.splitext(os.path.basename(f))[0]: f
+               for _, d in SETS for f in glob.glob(f"{d}/*.tif")}
+    for i0 in range(0, len(missing0), BATCH):
+        ch = [id2path[m] for m in missing0[i0:i0+BATCH]]
+        ims = []
+        for f in ch:
+            a = tifffile.imread(f)
+            if a.ndim == 3 and a.shape[0] == 16: a = np.transpose(a, (1, 2, 0))
+            ims.append(np.ascontiguousarray(a))
+        for f, r in zip(ch, model.predict(ims, imgsz=IMGSZ, conf=1e-7, max_det=MAX_DET,
+                                          device=DEVICE, verbose=False)):
+            iid = os.path.splitext(os.path.basename(f))[0]
+            b = r.boxes
+            if b is None or len(b) == 0:
+                continue
+            for (x1, y1, x2, y2), c, sc in zip(b.xyxy.cpu().numpy(),
+                                               b.cls.cpu().numpy().astype(int),
+                                               b.conf.cpu().numpy()):
+                if (x2 - x1) >= 1.0 and (y2 - y1) >= 1.0:
+                    rows.append((iid, int(c), float(sc), float(x1), float(y1), float(x2), float(y2)))
+    still = [i for i in missing0 if i not in {r[0] for r in rows}]
+    print(f"  sau khi quet lai, con {len(still)} anh trang: {still[:10]}")
+
+rows.sort(key=lambda r: (r[0], -r[2]))
 df = pd.DataFrame(rows, columns=["image_id", "class_id", "confidence", "x1", "y1", "x2", "y2"])
 df.insert(0, "id", range(len(df)))
 df.to_csv(OUT, index=False)

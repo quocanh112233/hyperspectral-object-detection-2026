@@ -1,0 +1,15 @@
+{
+  "id": "qucanhtrnnguyn/hodc2026-prep-train-rgb",
+  "title": "HODC2026 prep train rgb",
+  "code_file": "prep.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "moderantnoukoussi/hyperspectral-object-detection-challenge-2026"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

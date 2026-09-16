@@ -1,18 +1,16 @@
 {
-  "id": "qucanhtrnnguyn/hodc2026-train",
-  "title": "HODC2026 train",
-  "code_file": "train.py",
+  "id": "qucanhtrnnguyn/hodc2026-ensemble",
+  "title": "HODC2026 ensemble",
+  "code_file": "ens.py",
   "language": "python",
   "kernel_type": "script",
   "is_private": true,
   "enable_gpu": true,
-  "enable_tpu": false,
   "enable_internet": true,
-  "dataset_sources": [
-    "qucanhtrnnguyn/hodc2026-offline-deps"
-  ],
+  "dataset_sources": [],
   "competition_sources": [],
   "kernel_sources": [
+    "qucanhtrnnguyn/hodc2026-train",
     "qucanhtrnnguyn/hodc2026-prep-train-rgb",
     "qucanhtrnnguyn/hodc2026-split2"
   ]

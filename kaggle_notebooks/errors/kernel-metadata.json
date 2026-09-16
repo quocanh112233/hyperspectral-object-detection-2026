@@ -1,0 +1,13 @@
+{
+  "id": "qucanhtrnnguyn/hodc2026-errors",
+  "title": "HODC2026 errors",
+  "code_file": "err.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": ["qucanhtrnnguyn/hodc2026-train", "qucanhtrnnguyn/hodc2026-prep-train-norm", "qucanhtrnnguyn/hodc2026-split2"]
+}

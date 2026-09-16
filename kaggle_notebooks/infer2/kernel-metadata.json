@@ -1,0 +1,20 @@
+{
+  "id": "qucanhtrnnguyn/hodc2026-infer2",
+  "title": "HODC2026 infer2",
+  "code_file": "infer2.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [
+    "qucanhtrnnguyn/hodc2026-train",
+    "qucanhtrnnguyn/hodc2026-train-2",
+    "qucanhtrnnguyn/hodc2026-train-3",
+    "qucanhtrnnguyn/hodc2026-prep-test-rgb",
+    "qucanhtrnnguyn/hodc2026-prep-train-rgb",
+    "qucanhtrnnguyn/hodc2026-split2"
+  ]
+}

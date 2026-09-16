@@ -8,7 +8,8 @@ import os, sys, glob, json, random, importlib.util, pathlib, subprocess
 # Moi lan chay chi doi DUNG MOT muc so voi lan truoc - bai hoc tu lan 2 (doi 4 thu
 # cung luc nen khong biet thu nao gay ra ket qua).
 RUN_CFG = {
-    "HODC_DFL": "4.0",    # <== LAN 11: 1.5 -> 4.0. Tat ca cac muc khac giu nhu lan 10.
+    "HODC_DFL": "4.0",   # giu cai da chung minh la tot hon (lan 11: +0.005)
+    "HODC_SEED": "2",   # <== model doc lap thu 2; gop hop chi an khi cac model SAI KHAC NHAU
 }
 for _k, _v in RUN_CFG.items():
     os.environ.setdefault(_k, _v)
